@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { getRoomById, rooms } from "@/data/rooms";
 import { RoomCard } from "@/components/ui/RoomCard";
+import { ScrollReveal } from "@/hooks/use-scroll-animation";
 import { useState } from "react";
 
 const amenityIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -60,99 +61,104 @@ const RoomDetails = () => {
         <div className="container-luxury">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Image Gallery */}
-            <div className="space-y-4">
-              <div className="aspect-[4/3] rounded-lg overflow-hidden">
-                <img
-                  src={room.images[selectedImage]}
-                  alt={room.name}
-                  className="w-full h-full object-cover"
-                />
+            <ScrollReveal animation="fade-right">
+              <div className="space-y-4">
+                <div className="aspect-[4/3] rounded-lg overflow-hidden">
+                  <img
+                    src={room.images[selectedImage]}
+                    alt={room.name}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  {room.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`aspect-[4/3] rounded-lg overflow-hidden border-2 transition-all ${
+                        selectedImage === index
+                          ? "border-primary"
+                          : "border-transparent hover:border-border"
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${room.name} view ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
-                {room.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`aspect-[4/3] rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index
-                        ? "border-primary"
-                        : "border-transparent hover:border-border"
-                    }`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${room.name} view ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
+            </ScrollReveal>
 
             {/* Room Info */}
-            <div>
-              <span className="inline-block text-xs tracking-[0.3em] uppercase text-primary font-semibold mb-3">
-                {room.featured ? "Featured Suite" : "Accommodation"}
-              </span>
-              <h1 className="heading-lg mb-4">{room.name}</h1>
-              
-              {/* Quick Facts */}
-              <div className="flex flex-wrap gap-6 mb-6 text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  <span>{room.capacity} Guests</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Maximize className="w-5 h-5" />
-                  <span>{room.size} m²</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Bed className="w-5 h-5" />
-                  <span>{room.bedType} Bed</span>
-                </div>
-              </div>
-
-              <p className="text-muted-foreground leading-relaxed mb-8">
-                {room.longDescription}
-              </p>
-
-              {/* Price */}
-              <div className="bg-secondary/50 p-6 rounded-lg mb-8">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-3xl font-display font-semibold">
-                    ${room.price}
-                  </span>
-                  <span className="text-muted-foreground">per night</span>
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Includes taxes and breakfast for two
-                </p>
-                <Button variant="luxury" size="xl" className="w-full" asChild>
-                  <Link to="/booking">Reserve This Room</Link>
-                </Button>
-              </div>
-
-              {/* Amenities */}
+            <ScrollReveal animation="fade-left" delay={0.1}>
               <div>
-                <h3 className="text-lg font-display font-medium mb-4">
-                  Room Amenities
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {room.amenities.map((amenity) => {
-                    const Icon = amenityIcons[amenity] || Check;
-                    return (
-                      <div
-                        key={amenity}
-                        className="flex items-center gap-2 text-sm text-muted-foreground"
-                      >
-                        <Icon className="w-4 h-4 text-primary" />
-                        <span>{amenity}</span>
-                      </div>
-                    );
-                  })}
+                <span className="inline-block text-xs tracking-[0.3em] uppercase text-primary font-semibold mb-3">
+                  {room.featured ? "Featured Suite" : "Accommodation"}
+                </span>
+                <h1 className="heading-lg mb-4">{room.name}</h1>
+                
+                {/* Quick Facts */}
+                <div className="flex flex-wrap gap-6 mb-6 text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    <span>{room.capacity} Guests</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Maximize className="w-5 h-5" />
+                    <span>{room.size} m²</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Bed className="w-5 h-5" />
+                    <span>{room.bedType} Bed</span>
+                  </div>
+                </div>
+
+                <p className="text-muted-foreground leading-relaxed mb-8">
+                  {room.longDescription}
+                </p>
+
+                {/* Price */}
+                <div className="bg-secondary/50 p-6 rounded-lg mb-8">
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-3xl font-display font-semibold">
+                      ${room.price}
+                    </span>
+                    <span className="text-muted-foreground">per night</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Includes taxes and breakfast for two
+                  </p>
+                  <Button variant="luxury" size="xl" className="w-full" asChild>
+                    <Link to="/booking">Reserve This Room</Link>
+                  </Button>
+                </div>
+
+                {/* Amenities */}
+                <div>
+                  <h3 className="text-lg font-display font-medium mb-4">
+                    Room Amenities
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {room.amenities.map((amenity, index) => {
+                      const Icon = amenityIcons[amenity] || Check;
+                      return (
+                        <div
+                          key={amenity}
+                          className="flex items-center gap-2 text-sm text-muted-foreground"
+                          style={{ animationDelay: `${index * 0.05}s` }}
+                        >
+                          <Icon className="w-4 h-4 text-primary" />
+                          <span>{amenity}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -160,10 +166,14 @@ const RoomDetails = () => {
       {/* Other Rooms */}
       <section className="section-padding bg-secondary/30">
         <div className="container-luxury">
-          <h2 className="heading-md text-center mb-8">You May Also Like</h2>
+          <ScrollReveal animation="fade-up">
+            <h2 className="heading-md text-center mb-8">You May Also Like</h2>
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {otherRooms.map((r) => (
-              <RoomCard key={r.id} {...r} />
+            {otherRooms.map((r, index) => (
+              <ScrollReveal key={r.id} animation="fade-up" delay={0.1} stagger={0.15} index={index}>
+                <RoomCard {...r} />
+              </ScrollReveal>
             ))}
           </div>
         </div>

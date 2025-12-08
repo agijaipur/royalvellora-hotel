@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { RoomCard } from "@/components/ui/RoomCard";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { ScrollReveal } from "@/hooks/use-scroll-animation";
 import { rooms } from "@/data/rooms";
 import heroLobby from "@/assets/hero-lobby.jpg";
 import spaImage from "@/assets/spa.jpg";
@@ -105,25 +106,25 @@ const Index = () => {
       {/* Features Section */}
       <section className="section-padding bg-secondary/30">
         <div className="container-luxury">
-          <SectionHeading
-            subtitle="Why Choose Us"
-            title="The Art of Hospitality"
-            description="At Royal Vellora Inn, we believe luxury lies in the details. Every aspect of your stay is crafted to perfection."
-          />
+          <ScrollReveal animation="fade-up">
+            <SectionHeading
+              subtitle="Why Choose Us"
+              title="The Art of Hospitality"
+              description="At Royal Vellora Inn, we believe luxury lies in the details. Every aspect of your stay is crafted to perfection."
+            />
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div
-                key={feature.title}
-                className="text-center p-8 rounded-lg bg-card hover:shadow-luxury transition-all duration-500 group"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                  <feature.icon className="w-7 h-7" />
+              <ScrollReveal key={feature.title} animation="fade-up" delay={0.1} stagger={0.1} index={index}>
+                <div className="text-center p-8 rounded-lg bg-card hover:shadow-luxury transition-all duration-500 group h-full">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                    <feature.icon className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-lg font-display font-medium mb-3">{feature.title}</h3>
+                  <p className="text-muted-foreground text-sm">{feature.description}</p>
                 </div>
-                <h3 className="text-lg font-display font-medium mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm">{feature.description}</p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -132,26 +133,32 @@ const Index = () => {
       {/* Rooms Section */}
       <section className="section-padding">
         <div className="container-luxury">
-          <SectionHeading
-            subtitle="Accommodations"
-            title="Exquisite Rooms & Suites"
-            description="Each room is a sanctuary of comfort, designed with meticulous attention to detail and furnished with the finest amenities."
-          />
+          <ScrollReveal animation="fade-up">
+            <SectionHeading
+              subtitle="Accommodations"
+              title="Exquisite Rooms & Suites"
+              description="Each room is a sanctuary of comfort, designed with meticulous attention to detail and furnished with the finest amenities."
+            />
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {rooms.slice(0, 3).map((room) => (
-              <RoomCard key={room.id} {...room} />
+            {rooms.slice(0, 3).map((room, index) => (
+              <ScrollReveal key={room.id} animation="fade-up" delay={0.1} stagger={0.15} index={index}>
+                <RoomCard {...room} />
+              </ScrollReveal>
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Button variant="luxury-outline" size="lg" asChild>
-              <Link to="/rooms" className="inline-flex items-center gap-2">
-                View All Rooms
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          </div>
+          <ScrollReveal animation="fade-up" delay={0.4}>
+            <div className="text-center mt-12">
+              <Button variant="luxury-outline" size="lg" asChild>
+                <Link to="/rooms" className="inline-flex items-center gap-2">
+                  View All Rooms
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -159,69 +166,73 @@ const Index = () => {
       <section className="section-padding bg-foreground text-background">
         <div className="container-luxury">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <span className="inline-block text-xs tracking-[0.3em] uppercase text-primary font-semibold mb-4">
-                Experiences
-              </span>
-              <h2 className="heading-lg mb-6">Indulge in Timeless Luxury</h2>
-              <p className="text-background/70 mb-8 leading-relaxed">
-                From our award-winning spa to exquisite dining experiences, Royal
-                Vellora Inn offers a world of refined pleasures. Let us curate
-                unforgettable moments during your stay.
-              </p>
+            <ScrollReveal animation="fade-right">
+              <div>
+                <span className="inline-block text-xs tracking-[0.3em] uppercase text-primary font-semibold mb-4">
+                  Experiences
+                </span>
+                <h2 className="heading-lg mb-6">Indulge in Timeless Luxury</h2>
+                <p className="text-background/70 mb-8 leading-relaxed">
+                  From our award-winning spa to exquisite dining experiences, Royal
+                  Vellora Inn offers a world of refined pleasures. Let us curate
+                  unforgettable moments during your stay.
+                </p>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-2" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Spa & Wellness</h4>
-                    <p className="text-background/60 text-sm">
-                      Rejuvenate with bespoke treatments in our serene sanctuary.
-                    </p>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-2 h-2 rounded-full bg-primary mt-2" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Spa & Wellness</h4>
+                      <p className="text-background/60 text-sm">
+                        Rejuvenate with bespoke treatments in our serene sanctuary.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-2" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Fine Dining</h4>
-                    <p className="text-background/60 text-sm">
-                      Savor culinary masterpieces crafted by world-renowned chefs.
-                    </p>
+                  <div className="flex items-start gap-4">
+                    <div className="w-2 h-2 rounded-full bg-primary mt-2" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Fine Dining</h4>
+                      <p className="text-background/60 text-sm">
+                        Savor culinary masterpieces crafted by world-renowned chefs.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-2" />
-                  <div>
-                    <h4 className="font-semibold mb-1">Concierge Services</h4>
-                    <p className="text-background/60 text-sm">
-                      Your every wish attended to with discretion and care.
-                    </p>
+                  <div className="flex items-start gap-4">
+                    <div className="w-2 h-2 rounded-full bg-primary mt-2" />
+                    <div>
+                      <h4 className="font-semibold mb-1">Concierge Services</h4>
+                      <p className="text-background/60 text-sm">
+                        Your every wish attended to with discretion and care.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <img
-                  src={spaImage}
-                  alt="Spa & Wellness"
-                  className="rounded-lg w-full h-48 object-cover"
-                />
-                <img
-                  src={diningImage}
-                  alt="Fine Dining"
-                  className="rounded-lg w-full h-64 object-cover"
-                />
+            <ScrollReveal animation="fade-left" delay={0.2}>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  <img
+                    src={spaImage}
+                    alt="Spa & Wellness"
+                    className="rounded-lg w-full h-48 object-cover"
+                  />
+                  <img
+                    src={diningImage}
+                    alt="Fine Dining"
+                    className="rounded-lg w-full h-64 object-cover"
+                  />
+                </div>
+                <div className="pt-8">
+                  <img
+                    src={heroLobby}
+                    alt="Hotel Experience"
+                    className="rounded-lg w-full h-80 object-cover"
+                  />
+                </div>
               </div>
-              <div className="pt-8">
-                <img
-                  src={heroLobby}
-                  alt="Hotel Experience"
-                  className="rounded-lg w-full h-80 object-cover"
-                />
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -229,31 +240,32 @@ const Index = () => {
       {/* Testimonials Section */}
       <section className="section-padding">
         <div className="container-luxury">
-          <SectionHeading
-            subtitle="Guest Reviews"
-            title="Words from Our Guests"
-            description="The true measure of our success lies in the experiences of those we serve."
-          />
+          <ScrollReveal animation="fade-up">
+            <SectionHeading
+              subtitle="Guest Reviews"
+              title="Words from Our Guests"
+              description="The true measure of our success lies in the experiences of those we serve."
+            />
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div
-                key={testimonial.author}
-                className="bg-card p-8 rounded-lg border border-border/50 hover:shadow-luxury transition-all duration-500"
-              >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
+              <ScrollReveal key={testimonial.author} animation="fade-up" delay={0.1} stagger={0.1} index={index}>
+                <div className="bg-card p-8 rounded-lg border border-border/50 hover:shadow-luxury transition-all duration-500 h-full">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    ))}
+                  </div>
+                  <blockquote className="text-foreground/80 mb-6 italic">
+                    "{testimonial.quote}"
+                  </blockquote>
+                  <div>
+                    <p className="font-semibold">{testimonial.author}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                  </div>
                 </div>
-                <blockquote className="text-foreground/80 mb-6 italic">
-                  "{testimonial.quote}"
-                </blockquote>
-                <div>
-                  <p className="font-semibold">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.location}</p>
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -262,13 +274,15 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-primary/20 via-primary/10 to-secondary/30">
         <div className="container-luxury text-center">
-          <h2 className="heading-lg mb-4">Begin Your Journey</h2>
-          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Let us create unforgettable memories during your stay at Royal Vellora Inn.
-          </p>
-          <Button variant="luxury" size="xl" asChild>
-            <Link to="/booking">Book Your Stay</Link>
-          </Button>
+          <ScrollReveal animation="scale">
+            <h2 className="heading-lg mb-4">Begin Your Journey</h2>
+            <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+              Let us create unforgettable memories during your stay at Royal Vellora Inn.
+            </p>
+            <Button variant="luxury" size="xl" asChild>
+              <Link to="/booking">Book Your Stay</Link>
+            </Button>
+          </ScrollReveal>
         </div>
       </section>
     </Layout>
