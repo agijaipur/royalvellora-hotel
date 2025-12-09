@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Star, Sparkles, Shield, Heart } from "lucide-react";
+import { ArrowRight, Star, Sparkles, Shield, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { RoomCard } from "@/components/ui/RoomCard";
@@ -9,6 +10,18 @@ import { rooms } from "@/data/rooms";
 import heroLobby from "@/assets/hero-lobby.jpg";
 import spaImage from "@/assets/spa.jpg";
 import diningImage from "@/assets/dining.jpg";
+import roomDeluxe from "@/assets/room-deluxe.jpg";
+import roomExecutive from "@/assets/room-executive.jpg";
+import roomPresidential from "@/assets/room-presidential.jpg";
+
+const bannerImages = [
+  { src: heroLobby, alt: "Royal Vellora Inn Lobby", title: "Grand Lobby" },
+  { src: roomDeluxe, alt: "Deluxe Room", title: "Deluxe Suite" },
+  { src: roomExecutive, alt: "Executive Room", title: "Executive Room" },
+  { src: roomPresidential, alt: "Presidential Suite", title: "Presidential Suite" },
+  { src: spaImage, alt: "Spa & Wellness", title: "Spa & Wellness" },
+  { src: diningImage, alt: "Fine Dining", title: "Fine Dining" },
+];
 
 const features = [
   {
@@ -55,18 +68,80 @@ const testimonials = [
 ];
 
 const Index = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  const goToNext = () => {
+    setIsAutoPlaying(false);
+    setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+  };
+
+  const goToPrev = () => {
+    setIsAutoPlaying(false);
+    setCurrentSlide((prev) => (prev - 1 + bannerImages.length) % bannerImages.length);
+  };
+
   return (
     <Layout>
-      {/* Hero Section */}
+      {/* Hero Section with Banner Carousel */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
+        {/* Banner Carousel */}
         <div className="absolute inset-0">
-          <img
-            src={heroLobby}
-            alt="Royal Vellora Inn Lobby"
-            className="w-full h-full object-cover"
-          />
+          {bannerImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-700 ${
+                index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
           <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/20 to-background" />
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={goToPrev}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/10 backdrop-blur-sm border border-background/20 flex items-center justify-center text-background hover:bg-background/20 transition-all duration-300"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={goToNext}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/10 backdrop-blur-sm border border-background/20 flex items-center justify-center text-background hover:bg-background/20 transition-all duration-300"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* Progress Indicators */}
+        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {bannerImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setIsAutoPlaying(false);
+                setCurrentSlide(index);
+              }}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                index === currentSlide 
+                  ? "w-8 bg-primary" 
+                  : "w-4 bg-background/40 hover:bg-background/60"
+              }`}
+            />
+          ))}
         </div>
 
         {/* Hero Content */}
