@@ -222,7 +222,7 @@ const Index = () => {
             />
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {rooms.slice(0, 3).map((room, index) => (
               <ScrollReveal key={room.id} animation="fade-up" delay={0.1} stagger={0.15} index={index}>
                 <RoomCard {...room} />
