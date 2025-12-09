@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Users, Maximize, Wifi } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface RoomCardProps {
   id: string;
@@ -10,7 +9,6 @@ interface RoomCardProps {
   image: string;
   capacity: number;
   size: number;
-  featured?: boolean;
 }
 
 export const RoomCard = ({
@@ -21,18 +19,14 @@ export const RoomCard = ({
   image,
   capacity,
   size,
-  featured = false,
 }: RoomCardProps) => {
   return (
     <Link
       to={`/rooms/${id}`}
-      className={cn(
-        "group block bg-card rounded-lg overflow-hidden transition-all duration-500 hover:shadow-luxury",
-        featured && "lg:col-span-2 lg:grid lg:grid-cols-2"
-      )}
+      className="group block bg-card rounded-lg overflow-hidden transition-all duration-500 hover:shadow-luxury h-full flex flex-col"
     >
       {/* Image */}
-      <div className={cn("relative overflow-hidden", featured ? "h-80 lg:h-full" : "h-64")}>
+      <div className="relative overflow-hidden h-64 flex-shrink-0">
         <img
           src={image}
           alt={name}
@@ -50,11 +44,11 @@ export const RoomCard = ({
       </div>
 
       {/* Content */}
-      <div className="p-6 lg:p-8">
+      <div className="p-6 lg:p-8 flex flex-col flex-grow">
         <h3 className="text-xl lg:text-2xl font-display font-medium mb-2 group-hover:text-primary transition-colors">
           {name}
         </h3>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-grow">
           {description}
         </p>
 
@@ -75,7 +69,7 @@ export const RoomCard = ({
         </div>
 
         {/* CTA */}
-        <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide group-hover:text-primary transition-colors">
+        <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide group-hover:text-primary transition-colors mt-auto">
           <span>View Details</span>
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </div>
