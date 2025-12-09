@@ -13,11 +13,17 @@ import diningImage from "@/assets/dining.jpg";
 import roomDeluxe from "@/assets/room-deluxe.jpg";
 import roomExecutive from "@/assets/room-executive.jpg";
 import roomPresidential from "@/assets/room-presidential.jpg";
+import poolSunset from "@/assets/pool-sunset.jpg";
+import ballroom from "@/assets/ballroom.jpg";
+import terraceDining from "@/assets/terrace-dining.jpg";
 
 const bannerImages = [
   { src: heroLobby, alt: "Royal Vellora Inn Lobby", title: "Grand Lobby" },
+  { src: poolSunset, alt: "Infinity Pool at Sunset", title: "Infinity Pool" },
   { src: roomDeluxe, alt: "Deluxe Room", title: "Deluxe Suite" },
+  { src: ballroom, alt: "Grand Ballroom", title: "Grand Ballroom" },
   { src: roomExecutive, alt: "Executive Room", title: "Executive Room" },
+  { src: terraceDining, alt: "Terrace Dining", title: "Private Terrace" },
   { src: roomPresidential, alt: "Presidential Suite", title: "Presidential Suite" },
   { src: spaImage, alt: "Spa & Wellness", title: "Spa & Wellness" },
   { src: diningImage, alt: "Fine Dining", title: "Fine Dining" },
@@ -75,7 +81,7 @@ const Index = () => {
     if (!isAutoPlaying) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
 
