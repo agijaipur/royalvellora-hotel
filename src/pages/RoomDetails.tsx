@@ -1,11 +1,11 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, Maximize, Bed, Check, Wifi, Tv, Coffee, Wind, Lock } from "lucide-react";
+import { ArrowLeft, Users, Maximize, Bed, Check, Wifi, Tv, Coffee, Wind, Lock, ChevronLeft, ChevronRight } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { getRoomById, rooms } from "@/data/rooms";
 import { RoomCard } from "@/components/ui/RoomCard";
 import { ScrollReveal } from "@/hooks/use-scroll-animation";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const amenityIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   "Free WiFi": Wifi,
@@ -20,6 +20,30 @@ const RoomDetails = () => {
   const navigate = useNavigate();
   const room = getRoomById(id || "");
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Auto-rotate carousel every 2 seconds
+  useEffect(() => {
+    if (!room || !isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setSelectedImage((prev) => (prev + 1) % room.images.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [room, isAutoPlaying]);
+
+  const goToNext = useCallback(() => {
+    if (!room) return;
+    setIsAutoPlaying(false);
+    setSelectedImage((prev) => (prev + 1) % room.images.length);
+  }, [room]);
+
+  const goToPrev = useCallback(() => {
+    if (!room) return;
+    setIsAutoPlaying(false);
+    setSelectedImage((prev) => (prev - 1 + room.images.length) % room.images.length);
+  }, [room]);
 
   if (!room) {
     return (
@@ -60,25 +84,90 @@ const RoomDetails = () => {
       <section className="section-padding pt-8">
         <div className="container-luxury">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Image Gallery */}
+            {/* Image Gallery Carousel */}
             <ScrollReveal animation="fade-right">
               <div className="space-y-4">
-                <div className="aspect-[4/3] rounded-lg overflow-hidden">
-                  <img
-                    src={room.images[selectedImage]}
-                    alt={room.name}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  />
+                {/* Main Carousel */}
+                <div 
+                  className="relative aspect-[4/3] rounded-lg overflow-hidden group"
+                  onMouseEnter={() => setIsAutoPlaying(false)}
+                  onMouseLeave={() => setIsAutoPlaying(true)}
+                >
+                  {/* Image Container with Slide Animation */}
+                  <div className="relative w-full h-full">
+                    {room.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`${room.name} view ${index + 1}`}
+                        className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out ${
+                          selectedImage === index 
+                            ? "opacity-100 scale-100" 
+                            : "opacity-0 scale-105"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Navigation Arrows */}
+                  <button
+                    onClick={goToPrev}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-background hover:scale-110 shadow-elegant"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-foreground" />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-background hover:scale-110 shadow-elegant"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-5 h-5 text-foreground" />
+                  </button>
+
+                  {/* Progress Indicators */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                    {room.images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setIsAutoPlaying(false);
+                          setSelectedImage(index);
+                        }}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          selectedImage === index 
+                            ? "w-8 bg-primary" 
+                            : "w-1.5 bg-background/60 hover:bg-background/80"
+                        }`}
+                        aria-label={`Go to image ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Auto-play Indicator */}
+                  {isAutoPlaying && (
+                    <div className="absolute top-4 right-4 px-2 py-1 rounded bg-background/60 backdrop-blur-sm">
+                      <span className="text-xs text-foreground/80 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                        Auto
+                      </span>
+                    </div>
+                  )}
                 </div>
+
+                {/* Thumbnail Strip */}
                 <div className="grid grid-cols-3 gap-4">
                   {room.images.map((image, index) => (
                     <button
                       key={index}
-                      onClick={() => setSelectedImage(index)}
-                      className={`aspect-[4/3] rounded-lg overflow-hidden border-2 transition-all ${
+                      onClick={() => {
+                        setIsAutoPlaying(false);
+                        setSelectedImage(index);
+                      }}
+                      className={`aspect-[4/3] rounded-lg overflow-hidden border-2 transition-all duration-300 ${
                         selectedImage === index
-                          ? "border-primary"
-                          : "border-transparent hover:border-border"
+                          ? "border-primary ring-2 ring-primary/20"
+                          : "border-transparent hover:border-border opacity-70 hover:opacity-100"
                       }`}
                     >
                       <img
