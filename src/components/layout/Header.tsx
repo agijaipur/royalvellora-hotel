@@ -34,17 +34,25 @@ export const Header = () => {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
         isScrolled
           ? "bg-background/95 backdrop-blur-md shadow-sm py-3"
-          : "bg-transparent py-6"
+          : "bg-foreground/30 backdrop-blur-sm py-6"
       )}
     >
       <div className="container-luxury">
         <nav className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex flex-col items-start group">
-            <span className="text-2xl md:text-3xl font-display font-medium tracking-tight text-foreground group-hover:text-primary transition-colors">
+            <span className={cn(
+              "text-2xl md:text-3xl font-display font-medium tracking-tight transition-colors drop-shadow-md",
+              isScrolled 
+                ? "text-foreground group-hover:text-primary" 
+                : "text-white group-hover:text-primary"
+            )}>
               Royal Vellora
             </span>
-            <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-muted-foreground">
+            <span className={cn(
+              "text-[10px] md:text-xs tracking-[0.3em] uppercase drop-shadow-md",
+              isScrolled ? "text-muted-foreground" : "text-white/80"
+            )}>
               Inn
             </span>
           </Link>
@@ -56,10 +64,14 @@ export const Header = () => {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "text-sm tracking-wide uppercase font-medium transition-colors relative py-2",
-                  location.pathname === item.href
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground",
+                  "text-sm tracking-wide uppercase font-medium transition-colors relative py-2 drop-shadow-md",
+                  isScrolled
+                    ? location.pathname === item.href
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                    : location.pathname === item.href
+                      ? "text-primary"
+                      : "text-white/90 hover:text-white",
                   "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:origin-left after:transition-transform after:duration-300",
                   location.pathname === item.href
                     ? "after:scale-x-100"
@@ -75,7 +87,12 @@ export const Header = () => {
           <div className="hidden lg:flex items-center gap-4">
             <a
               href="tel:+1234567890"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className={cn(
+                "flex items-center gap-2 text-sm transition-colors drop-shadow-md",
+                isScrolled 
+                  ? "text-muted-foreground hover:text-foreground" 
+                  : "text-white/90 hover:text-white"
+              )}
             >
               <Phone className="w-4 h-4" />
               <span>+1 234 567 890</span>
@@ -88,7 +105,10 @@ export const Header = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 text-foreground"
+            className={cn(
+              "lg:hidden p-2 drop-shadow-md",
+              isScrolled ? "text-foreground" : "text-white"
+            )}
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
