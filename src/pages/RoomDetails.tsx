@@ -1,11 +1,12 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, Maximize, Bed, Check, Wifi, Tv, Coffee, Wind, Lock, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Users, Maximize, Bed, Check, Wifi, Tv, Coffee, Wind, Lock, ChevronLeft, ChevronRight, View } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { getRoomById, rooms } from "@/data/rooms";
 import { RoomCard } from "@/components/ui/RoomCard";
 import { ScrollReveal } from "@/hooks/use-scroll-animation";
 import { useState, useEffect, useCallback } from "react";
+import { Viewer360 } from "@/components/ui/Viewer360";
 
 const amenityIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   "Free WiFi": Wifi,
@@ -21,6 +22,7 @@ const RoomDetails = () => {
   const room = getRoomById(id || "");
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [is360ViewOpen, setIs360ViewOpen] = useState(false);
 
   // Auto-rotate carousel every 2 seconds
   useEffect(() => {
@@ -153,6 +155,17 @@ const RoomDetails = () => {
                       </span>
                     </div>
                   )}
+
+                  {/* 360° View Button */}
+                  {room.panorama360 && (
+                    <button
+                      onClick={() => setIs360ViewOpen(true)}
+                      className="absolute top-4 left-4 px-3 py-2 rounded-lg bg-primary text-primary-foreground flex items-center gap-2 text-sm font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg hover:scale-105"
+                    >
+                      <View className="w-4 h-4" />
+                      360° View
+                    </button>
+                  )}
                 </div>
 
                 {/* Thumbnail Strip */}
@@ -267,6 +280,17 @@ const RoomDetails = () => {
           </div>
         </div>
       </section>
+
+      {/* 360° Viewer Modal */}
+      {room.panorama360 && (
+        <Viewer360
+          isOpen={is360ViewOpen}
+          onClose={() => setIs360ViewOpen(false)}
+          mediaUrl={room.panorama360.url}
+          mediaType={room.panorama360.type}
+          roomName={room.name}
+        />
+      )}
     </Layout>
   );
 };
