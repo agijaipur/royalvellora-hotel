@@ -16,6 +16,11 @@ export interface Room {
   bedType: string;
   amenities: string[];
   featured?: boolean;
+  // 360° View fields
+  panorama360?: {
+    url: string;
+    type: "image" | "video" | "youtube";
+  };
 }
 
 export const rooms: Room[] = [
@@ -32,6 +37,10 @@ export const rooms: Room[] = [
     bedType: "King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "Room Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries"],
     featured: false,
+    panorama360: {
+      url: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=4096&h=2048&fit=crop",
+      type: "image",
+    },
   },
   {
     id: "executive-suite",
@@ -45,6 +54,10 @@ export const rooms: Room[] = [
     size: 55,
     bedType: "King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "Room Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries", "Living Area", "Work Desk", "Bathtub"],
+    panorama360: {
+      url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=4096&h=2048&fit=crop",
+      type: "image",
+    },
     featured: true,
   },
   {
@@ -60,6 +73,10 @@ export const rooms: Room[] = [
     bedType: "Super King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "24/7 Butler Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries", "Living Area", "Dining Area", "Jacuzzi", "VIP Lounge Access", "Private Check-in"],
     featured: true,
+    panorama360: {
+      url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=4096&h=2048&fit=crop",
+      type: "image",
+    },
   },
   {
     id: "junior-suite",
@@ -74,6 +91,10 @@ export const rooms: Room[] = [
     bedType: "King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "Room Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries", "Seating Area", "Work Desk"],
     featured: false,
+    panorama360: {
+      url: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=4096&h=2048&fit=crop",
+      type: "image",
+    },
   },
 ];
 
