@@ -157,13 +157,13 @@ const RoomDetails = () => {
                   )}
 
                   {/* 360° View Button */}
-                  {room.panorama360 && (
+                  {room.panoramaScenes && room.panoramaScenes.length > 0 && (
                     <button
                       onClick={() => setIs360ViewOpen(true)}
                       className="absolute top-4 left-4 px-3 py-2 rounded-lg bg-primary text-primary-foreground flex items-center gap-2 text-sm font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg hover:scale-105"
                     >
                       <View className="w-4 h-4" />
-                      360° View
+                      360° Tour ({room.panoramaScenes.length} scenes)
                     </button>
                   )}
                 </div>
@@ -282,12 +282,11 @@ const RoomDetails = () => {
       </section>
 
       {/* 360° Viewer Modal */}
-      {room.panorama360 && (
+      {room.panoramaScenes && room.panoramaScenes.length > 0 && (
         <Viewer360
           isOpen={is360ViewOpen}
           onClose={() => setIs360ViewOpen(false)}
-          mediaUrl={room.panorama360.url}
-          mediaType={room.panorama360.type}
+          scenes={room.panoramaScenes}
           roomName={room.name}
         />
       )}

@@ -3,6 +3,14 @@ import roomDeluxe from "@/assets/room-deluxe.jpg";
 import roomExecutive from "@/assets/room-executive.jpg";
 import roomPresidential from "@/assets/room-presidential.jpg";
 
+export interface PanoramaScene {
+  id: string;
+  name: string;
+  url: string;
+  type: "image" | "video" | "youtube";
+  icon?: "bedroom" | "bathroom" | "lobby" | "balcony" | "living" | "dining";
+}
+
 export interface Room {
   id: string;
   name: string;
@@ -16,11 +24,8 @@ export interface Room {
   bedType: string;
   amenities: string[];
   featured?: boolean;
-  // 360° View fields
-  panorama360?: {
-    url: string;
-    type: "image" | "video" | "youtube";
-  };
+  // 360° View fields - now supports multiple scenes
+  panoramaScenes?: PanoramaScene[];
 }
 
 export const rooms: Room[] = [
@@ -37,10 +42,22 @@ export const rooms: Room[] = [
     bedType: "King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "Room Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries"],
     featured: false,
-    panorama360: {
-      url: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=4096&h=2048&fit=crop",
-      type: "image",
-    },
+    panoramaScenes: [
+      {
+        id: "bedroom",
+        name: "Bedroom",
+        url: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bedroom",
+      },
+      {
+        id: "bathroom",
+        name: "Bathroom",
+        url: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bathroom",
+      },
+    ],
   },
   {
     id: "executive-suite",
@@ -54,11 +71,30 @@ export const rooms: Room[] = [
     size: 55,
     bedType: "King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "Room Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries", "Living Area", "Work Desk", "Bathtub"],
-    panorama360: {
-      url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=4096&h=2048&fit=crop",
-      type: "image",
-    },
     featured: true,
+    panoramaScenes: [
+      {
+        id: "bedroom",
+        name: "Master Bedroom",
+        url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bedroom",
+      },
+      {
+        id: "living",
+        name: "Living Area",
+        url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "living",
+      },
+      {
+        id: "bathroom",
+        name: "Spa Bathroom",
+        url: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bathroom",
+      },
+    ],
   },
   {
     id: "presidential-suite",
@@ -73,10 +109,43 @@ export const rooms: Room[] = [
     bedType: "Super King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "24/7 Butler Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries", "Living Area", "Dining Area", "Jacuzzi", "VIP Lounge Access", "Private Check-in"],
     featured: true,
-    panorama360: {
-      url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=4096&h=2048&fit=crop",
-      type: "image",
-    },
+    panoramaScenes: [
+      {
+        id: "bedroom",
+        name: "Grand Bedroom",
+        url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bedroom",
+      },
+      {
+        id: "living",
+        name: "Living Room",
+        url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "living",
+      },
+      {
+        id: "dining",
+        name: "Private Dining",
+        url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "dining",
+      },
+      {
+        id: "bathroom",
+        name: "Jacuzzi Bathroom",
+        url: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bathroom",
+      },
+      {
+        id: "balcony",
+        name: "Private Balcony",
+        url: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "balcony",
+      },
+    ],
   },
   {
     id: "junior-suite",
@@ -91,10 +160,22 @@ export const rooms: Room[] = [
     bedType: "King",
     amenities: ["Free WiFi", "Smart TV", "Mini Bar", "Room Service", "Air Conditioning", "Safe Box", "Nespresso Machine", "Luxury Toiletries", "Seating Area", "Work Desk"],
     featured: false,
-    panorama360: {
-      url: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=4096&h=2048&fit=crop",
-      type: "image",
-    },
+    panoramaScenes: [
+      {
+        id: "bedroom",
+        name: "Bedroom",
+        url: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bedroom",
+      },
+      {
+        id: "bathroom",
+        name: "Bathroom",
+        url: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=4096&h=2048&fit=crop",
+        type: "image",
+        icon: "bathroom",
+      },
+    ],
   },
 ];
 
